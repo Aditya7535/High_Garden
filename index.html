@@ -39,6 +39,11 @@
             overflow-x: hidden;
         }
 
+        @keyframes navFadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
         /* NAV */
         nav {
             position: fixed;
@@ -50,8 +55,12 @@
             justify-content: space-between;
             align-items: center;
             padding: 1.4rem 3rem;
-            background: linear-gradient(to bottom, rgba(13, 10, 7, 0.9) 0%, transparent 100%);
-            backdrop-filter: blur(2px);
+            background: rgba(0, 0, 0, 0.25);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            opacity: 0;
+            animation: navFadeIn 0.6s ease forwards;
         }
 
         .nav-logo {
@@ -60,6 +69,15 @@
             font-weight: 300;
             letter-spacing: 0.15em;
             color: var(--gold);
+        }
+
+        .mobile-menu-toggle {
+            display: none;
+            cursor: pointer;
+        }
+
+        .mobile-cta-item {
+            display: none;
         }
 
         .nav-links {
@@ -782,6 +800,133 @@
         .parallax-text {
             will-change: transform;
         }
+
+        /* MOBILE RESPONSIVENESS */
+        @media (max-width: 768px) {
+            nav {
+                padding: 1rem 1.5rem;
+                justify-content: space-between;
+            }
+
+            .desktop-cta {
+                display: none;
+            }
+
+            .mobile-menu-toggle {
+                display: block;
+                position: relative;
+                z-index: 101;
+            }
+
+            .mobile-cta-item {
+                display: block;
+                margin-top: 0.5rem;
+            }
+
+            .nav-links {
+                position: absolute;
+                top: 100%;
+                left: 0;
+                width: 100%;
+                background: rgba(13, 10, 7, 0.95);
+                backdrop-filter: blur(15px);
+                -webkit-backdrop-filter: blur(15px);
+                flex-direction: column;
+                align-items: center;
+                gap: 1.5rem;
+                padding: 2rem 0;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+                opacity: 0;
+                visibility: hidden;
+                transform: translateY(-10px);
+                transition: opacity 0.3s ease, transform 0.3s ease, visibility 0.3s ease;
+            }
+
+            .nav-links.active {
+                opacity: 1;
+                visibility: visible;
+                transform: translateY(0);
+            }
+
+            .nav-logo svg {
+                height: 45px;
+            }
+
+            .nav-logo span {
+                font-size: 1.1rem;
+            }
+
+            .hero-title {
+                font-size: clamp(2.5rem, 12vw, 4rem);
+            }
+
+            .hero-content {
+                padding: 1rem;
+            }
+
+            .section {
+                padding: 4rem 1.5rem;
+            }
+
+            .about-wrap {
+                grid-template-columns: 1fr;
+                gap: 3rem;
+            }
+
+            .stats-strip {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .stat-item {
+                border-bottom: 1px solid rgba(201, 169, 110, 0.15);
+                border-right: 1px solid rgba(201, 169, 110, 0.15);
+            }
+
+            .stat-item:nth-child(even) {
+                border-right: none;
+            }
+
+            .stat-item:nth-child(n+3) {
+                border-bottom: none;
+            }
+
+            .full-menu-section {
+                padding: 4rem 1.5rem;
+            }
+
+            .menu-category-title {
+                font-size: 1.8rem;
+            }
+
+            .menu-list-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.5rem;
+            }
+
+            .menu-list-dots {
+                display: none;
+            }
+
+            .menu-list-desc {
+                max-width: 100%;
+            }
+
+            .reserve-inner {
+                padding: 3rem 1.5rem;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .footer-grid {
+                grid-template-columns: 1fr;
+                gap: 3rem;
+                text-align: center;
+            }
+        }
     </style>
 </head>
 
@@ -829,13 +974,21 @@
             </svg>
             <span style="line-height: 1.1;">High<br>Garden</span>
         </div>
-        <ul class="nav-links">
-            <li><a href="#about">Story</a></li>
-            <li><a href="#menu">Menu</a></li>
-            <li><a href="#reserve">Reserve</a></li>
-            <li><a href="#find">Find Us</a></li>
+        <div class="mobile-menu-toggle" onclick="document.getElementById('navLinks').classList.toggle('active')">
+            <svg viewBox="0 0 24 24" width="28" height="28" fill="var(--gold)">
+                <circle cx="12" cy="5" r="2.5" />
+                <circle cx="12" cy="12" r="2.5" />
+                <circle cx="12" cy="19" r="2.5" />
+            </svg>
+        </div>
+        <ul class="nav-links" id="navLinks">
+            <li><a href="#about" onclick="document.getElementById('navLinks').classList.remove('active')">Story</a></li>
+            <li><a href="#menu" onclick="document.getElementById('navLinks').classList.remove('active')">Menu</a></li>
+            <li><a href="#reserve" onclick="document.getElementById('navLinks').classList.remove('active')">Reserve</a></li>
+            <li><a href="#find" onclick="document.getElementById('navLinks').classList.remove('active')">Find Us</a></li>
+            <li class="mobile-cta-item"><a href="#reserve" class="nav-cta" onclick="document.getElementById('navLinks').classList.remove('active')">Book a Table</a></li>
         </ul>
-        <a href="#reserve" class="nav-cta">Book a Table</a>
+        <a href="#reserve" class="nav-cta desktop-cta">Book a Table</a>
     </nav>
 
     <!-- HERO with background image -->
